@@ -2,3 +2,5 @@
 /.dbeaver-data-sources.xml
 /.project
 /.springBeans
+/target
+/.settings

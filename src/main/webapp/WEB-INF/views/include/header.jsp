@@ -25,7 +25,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
 	$(function(){
-		
 		$("#left-btn").find("a").click(function(e){
 			e.preventDefault();
 			
@@ -51,7 +50,7 @@
 			</div>
 			<div id="right-btn">
 				<a href="">사진보기</a>
-				<a href="">등록</a>
+				<a href="${pageContext.request.contextPath}/upload/upload">등록</a>
 				<c:if test="${!empty login}">
 					<a href="${pageContext.request.contextPath}/user/logout">로그아웃</a>
 				</c:if>

@@ -42,7 +42,6 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/" />
-			<mapping path="/user/join" />
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>
