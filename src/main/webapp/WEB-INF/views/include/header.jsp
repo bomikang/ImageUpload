@@ -28,17 +28,16 @@
 		$("#left-btn").find("a").click(function(e){
 			e.preventDefault();
 			
-			$(".left-menu").html("<a href='${pageContext.request.contextPath}/upload/list/'>전체보기</a><br />");
+			$(".left-menu").html("<a href='${pageContext.request.contextPath}/upload/list'>전체보기</a><br />");
 			
 			$.ajax({
 				url:"${pageContext.request.contextPath}/upload/menu",
-				type:"post",
-				data:{session : "${pageContext.request.session}"},
+				type:"get",
 				success:function(result){
 					console.log(result);
 					
 					for(var i = 0; i < result.length; i++){
-						var $a = "<a href='${pageContext.request.contextPath}/upload/list/"+result[i]+"'>"+result[i]+"</a><br />";
+						var $a = "<a href='${pageContext.request.contextPath}/upload/list?folder="+result[i]+"'>"+result[i]+"</a><br />";
 						$(".left-menu").append($a);
 					}
 

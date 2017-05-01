@@ -16,8 +16,14 @@
 	</select>
 	
 	<select id="selectFolder" resultType="String">
-		select folder from tbl_attach 
+		select distinct folder from tbl_attach 
 		where folder is not null and uid = #{uid}
+		order by folder asc;
+	</select>
+	
+	<select id="selectImageByFolder" resultType="String">
+		select * from tbl_attach 
+		where folder=#{folder} and uid = #{uid}
 		order by folder asc;
 	</select>
 	
@@ -29,5 +35,10 @@
 	<delete id="deleteAllImage">
 		delete from tbl_attach
 		where uid=#{uid}
+	</delete>
+	
+	<delete id="deleteImageByFolder">
+		delete from tbl_attach
+		where folder=#{folder} and uid=#{uid}
 	</delete>
 </mapper>

@@ -53,7 +53,7 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value="upload", method=RequestMethod.POST)
-	public String uploadPOST(List<MultipartFile> files, String directory, HttpSession session, Model model) throws Exception{
+	public String uploadPOST(List<MultipartFile> files, String directory, HttpSession session) throws Exception{
 		logger.info("upload POST..........");
 		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
@@ -64,9 +64,9 @@ public class UploadController {
 			logger.info("size : "+file.getSize());
 			logger.info("contentType : "+file.getContentType());
 			
-			if (directory.trim().equals("") || directory == null) {
+			if (directory == null || directory.trim().equals("")) {
 				directory = null;
-				logger.info("directory is null-------------------------");
+				logger.info("directory is null");
 			}
 			
 			String savedName = UploadFileUtil.uploadFile(uploadPath, directory, file.getOriginalFilename(), file.getBytes());
@@ -80,91 +80,104 @@ public class UploadController {
 		
 		service.insertImage(vo);
 		
-		List<String> list = service.selectImage(vo.getUid());
-		
-		model.addAttribute("imageList", list);
-		
 		return "redirect:/upload/list";
 	}
 	
 	/*전체보기*/
 	@RequestMapping(value="list", method=RequestMethod.GET)
-	public String listGET(HttpSession session, Model model) throws Exception{
+	public void listGET(String folder, HttpSession session, Model model) throws Exception{
 		logger.info("list GET..........");
 		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
 		List<String> list = service.selectImage(vo.getUid());
 		
-		if (list == null) {
-			model.addAttribute("error");
-		}else{
-			model.addAttribute("imageList", list);
+		if (folder != null && !folder.trim().equals("")) {
+			vo.setFolder(folder);
+			logger.info(folder+"----------------------------------");
+			list = service.selectImageByFolder(vo);
 		}
-		return "redirect:/upload/list";
-	}
-	
-	/*각 폴더 별로 보기*/
-	@RequestMapping(value="list/{folder}", method=RequestMethod.GET)
-	public String listGET(HttpSession session, Model model, @PathVariable("folder") String folder) throws Exception{
-		logger.info("list GET..........");
-		logger.info("******************************" + folder);
-		
-		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
-		List<String> list = service.selectImage(vo.getUid());
+		if (folder == null || folder.trim().equals("")) {
+			folder = "전체보기";
+		}
 		
 		if (list == null) {
 			model.addAttribute("error");
 		}else{
 			model.addAttribute("imageList", list);
+			model.addAttribute("folder", folder);
 		}
-		
-		return "/upload/list";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/menu", method=RequestMethod.POST)
-	public ResponseEntity<List<String>> menuList(HttpSession session){
+	@RequestMapping(value="menu", method=RequestMethod.GET)
+	public ResponseEntity<List<String>> getFolder(HttpSession session){
 		ResponseEntity<List<String>> entity = null;
+		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
+		
 		try{
-			List<String> menuList = service.selectFolder(vo.getUid());
-			entity = new ResponseEntity<List<String>>(menuList, HttpStatus.OK);
+			List<String> list = service.selectFolder(vo.getUid());
+			entity = new ResponseEntity<>(list, HttpStatus.OK);
 		}catch(Exception e){
-			e.printStackTrace();
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return entity;	
+		return entity;
 	}
 	
-	
 	@RequestMapping(value="deleteEach", method=RequestMethod.POST)
-	public String deleteEachPOST(HttpSession session, String fullname) throws Exception{
+	public String deleteEachPOST(HttpSession session, String fullname, String folder) throws Exception{
 		logger.info("deleteEach POST..........");
 		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
 		vo.setImageFiles(new String[]{fullname});
 		
-//		deleteFile(fullname); //실제파일삭제
+		if ( folder.trim().equals("전체보기") ) {
+			folder = null;
+		}
+		
+		deleteFile(folder, fullname); //실제파일삭제
 		service.deleteEachImage(vo);
 		
-		return "/upload/list";
+		if (folder != null && service.selectImageByFolder(vo).size() > 0) {
+			return "redirect:/upload/list?folder="+folder;
+		}
+		
+		return "redirect:/upload/list";
 	}
 	
 	@RequestMapping(value="deleteSelected", method=RequestMethod.POST)
-	public String deleteSelectedPOST(HttpSession session, String[] selectedFiles) throws Exception{
+	public String deleteSelectedPOST(HttpSession session, String[] selectedFiles, String folder) throws Exception{
 		logger.info("deleteSelected POST..........");
 		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
 		vo.setImageFiles(selectedFiles);
 		
-//		deleteFile(selectedFiles); //실제파일삭제
+		if ( folder.trim().equals("전체보기") ) {
+			folder = null;
+			String directory = null;
+			
+			for (String file : selectedFiles) {
+				String[] catchFolder = file.split("/"); 
+				if (catchFolder.length > 2) {
+					directory = catchFolder[1]; //폴더명
+				}
+				deleteFile(directory, file); //각각 폴더명의 실제파일삭제
+			}
+		}else{
+			vo.setFolder(folder);
+			deleteFile(folder, selectedFiles);
+		}
+		
 		service.deleteEachImage(vo);
 		
+		if (folder != null && service.selectImageByFolder(vo).size() > 0) {
+			return "redirect:/upload/list?folder="+folder;
+		}
 		return "redirect:/upload/list";
 	}
 	
 	@RequestMapping(value="deleteAll", method=RequestMethod.POST)
-	public String deleteAllPOST(HttpSession session) throws Exception{
+	public String deleteAllPOST(HttpSession session, String folder) throws Exception{
 		logger.info("deleteAll POST..........");
 		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
@@ -172,9 +185,31 @@ public class UploadController {
 		List<String> imageList = service.selectImage(vo.getUid());
 		String[] filenames = imageList.toArray(new String[imageList.size()]);
 		
-//		deleteFile(filenames); //실제파일삭제
-		service.deleteAllImage(vo.getUid());
+		if ( folder.trim().equals("전체보기") ) {
+			folder = null;
+			String directory = null;
+			
+			for (String file : filenames) {
+				String[] catchFolder = file.split("/"); 
+				if (catchFolder.length > 2) {
+					directory = catchFolder[1]; //폴더명
+				}
+				deleteFile(directory, file); //각각 폴더명의 실제파일삭제
+			}
+			
+			service.deleteAllImage(vo.getUid());
+		}else{
+			vo.setFolder(folder);
+			imageList = service.selectImageByFolder(vo);
+			filenames = imageList.toArray(new String[imageList.size()]);
+			deleteFile(folder, filenames);
+			
+			service.deleteImageByFolder(vo);
+		}
 		
+		if (folder != null && service.selectImageByFolder(vo).size() > 0) {
+			return "redirect:/upload/list?folder="+folder;
+		}
 		return "redirect:/upload/list";
 	}
 	
@@ -185,18 +220,20 @@ public class UploadController {
 		for (String filename : filenames) {
 			logger.info("delete file name : " + filename);
 			
+			if ( directory == null || directory.trim().equals("") ) {
+				String realName = filename.substring(3);
+				new File(uploadPath + "/" +realName).delete();
+				new File(uploadPath + filename).delete();
+			}
+			
 //			directory 존재시
-			if ( !directory.trim().equals("") && directory != null ) {
+			if ( directory != null && !directory.trim().equals("") ) {
 //				원본지우기
 				String dir = filename.substring(0, directory.length()+2); // /directory/
 				String realName = filename.substring(directory.length()+4); // xxx.png
 				new File(uploadPath + dir + realName).delete();
 				
 //				썸네일지우기
-				new File(uploadPath + filename).delete();
-			}else{
-				String realName = filename.substring(3);
-				new File(uploadPath + "/" +realName).delete();
 				new File(uploadPath + filename).delete();
 			}
 		}

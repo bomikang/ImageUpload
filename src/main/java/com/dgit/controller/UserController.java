@@ -36,7 +36,7 @@ public class UserController {
 		
 		service.insertUser(vo);
 		
-		return "redirect:/";
+		return "redirect:/upload/list";
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)

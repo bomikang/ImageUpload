@@ -42,11 +42,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 			logger.info("new id login success");
 			session.setAttribute(LOGIN, userVO);
 			
-//			이전에 있던 경로가 존재하면 그곳으로 이동, 없으면 홈으로 이동
-			Object dest = session.getAttribute("dest"); 
-			String path = dest != null ? (String) dest : request.getContextPath();
-			
-			response.sendRedirect(path);
+			response.sendRedirect(request.getContextPath()+"/upload/list");
 		}
 	}
 }

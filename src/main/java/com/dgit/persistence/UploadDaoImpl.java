@@ -36,6 +36,11 @@ public class UploadDaoImpl implements UploadDao{
 	public List<String> selectFolder(String uid) throws Exception {
 		return session.selectList(namespace+".selectFolder", uid);
 	}
+	
+	@Override
+	public List<String> selectImageByFolder(UserVO vo) throws Exception {
+		return session.selectList(namespace+".selectImageByFolder", vo);
+	}
 
 	@Override
 	public void deleteEachImage(String fullname, String uid) throws Exception {
@@ -50,6 +55,9 @@ public class UploadDaoImpl implements UploadDao{
 		session.delete(namespace+".deleteAllImage", uid);
 	}
 
-	
+	@Override
+	public void deleteImageByFolder(UserVO vo) throws Exception {
+		session.delete(namespace+".deleteImageByFolder", vo);
+	}
 
 }

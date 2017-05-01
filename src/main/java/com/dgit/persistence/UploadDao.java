@@ -9,6 +9,8 @@ public interface UploadDao {
 	void insertImage(String fullname, UserVO vo) throws Exception;
 	List<String> selectImage(String uid)  throws Exception;
 	List<String> selectFolder(String uid) throws Exception;
+	List<String> selectImageByFolder(UserVO vo) throws Exception;
 	void deleteEachImage(String fullname, String uid) throws Exception;
 	void deleteAllImage(String uid) throws Exception;
+	void deleteImageByFolder(UserVO vo) throws Exception;
 }

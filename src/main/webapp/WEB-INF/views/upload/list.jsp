@@ -4,14 +4,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
 	.one-image{display: inline-block; margin:15px; position:relative;text-align: right;}
-	.one-image img{height:150px; box-shadow: 2px 2px 1px 1px gray;}
-	.one-image input{position: absolute; margin-top:-145px; margin-left:-15px; visibility: hidden;}
+	.one-image img{height:100px; box-shadow: 2px 2px 1px 1px gray;}
+	.one-image input{position: absolute; margin-top:-96px; margin-left:-15px; visibility: hidden;}
 	.one-image button{position: absolute; font-size: 20px; width:30px; margin:-33px;}
 	#whenClickSelDel{display:none;}
 </style>
 <div class="wrapper">
 	<section>
 		<form action="" method="post" id="form1">
+		<fieldset>
+			<legend>${folder}</legend>
+			<input type="hidden" name="folder" value="${folder}"/>
 			<input type="hidden" name="fullname" id="deleteEach" />
 			<span id="selCheckName">
 				<!-- 삭제할 이미지들 -->
@@ -33,7 +36,7 @@
 					<button id="btnDelCancel">취소</button>
 				</span>
 				
-				<fieldset>
+				<div>
 					<c:forEach var="item" items="${imageList}">
 						<div class="one-image">
 							<img src="displayFile?fileName=${item}" alt="${item}" />
@@ -41,8 +44,9 @@
 							<button class='x-button'>X</button>
 						</div>
 					</c:forEach>
-				</fieldset>
+				</div>
 			</c:if>
+			</fieldset>
 		</form>
 	</section>
 </div>

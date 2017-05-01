@@ -31,6 +31,11 @@ public class UploadServiceImpl implements UploadService{
 	public List<String> selectFolder(String uid) throws Exception {
 		return dao.selectFolder(uid);
 	}
+	
+	@Override
+	public List<String> selectImageByFolder(UserVO vo) throws Exception {
+		return dao.selectImageByFolder(vo);
+	}
 
 	@Override
 	public void deleteEachImage(UserVO vo) throws Exception {
@@ -45,6 +50,8 @@ public class UploadServiceImpl implements UploadService{
 		dao.deleteAllImage(uid);
 	}
 
-	
-	
+	@Override
+	public void deleteImageByFolder(UserVO vo) throws Exception {
+		dao.deleteImageByFolder(vo);
+	}
 }
