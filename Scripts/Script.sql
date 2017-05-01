@@ -1,4 +1,5 @@
 use image_management;
+
 drop table tbl_attach;
 drop table tbl_user;
 
@@ -17,10 +18,22 @@ delete from tbl_user where uid = 'adf';
 
 create table tbl_attach(
 	fullname varchar(150) not null,
-	uno int not null,
+	uid varchar(50) not null,
+	folder varchar(50),
 	regdate timestamp default now(),
 	primary key(fullname)
 )
 
 alter table tbl_attach add constraint fk_board_attach
-foreign key (uno) references tbl_user(uno);
+foreign key (uid) references tbl_user(uid);
+
+select * from tbl_attach;
+
+select folder from tbl_attach 
+where folder is not null and uid = 'test1'
+order by folder asc;
+
+select * from tbl_attach where uid = 'test1';
+delete from tbl_attach;
+
+insert into tbl_attach(fullname, uid) values('abc', 'test1');

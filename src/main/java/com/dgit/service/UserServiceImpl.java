@@ -21,5 +21,4 @@ public class UserServiceImpl implements UserService{
 	public UserVO selectUser(LoginDTO dto) throws Exception {
 		return dao.selectUser(dto);
 	}
-	
 }

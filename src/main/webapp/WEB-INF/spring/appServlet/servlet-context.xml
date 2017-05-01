@@ -28,7 +28,7 @@
 	
 	<!-- 이미지 저장경로를 사용자가 설정해줌 -->
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="c:/z_image_management/upload" />
+		<beans:constructor-arg value="C:/z_image_management/upload" />
 	</beans:bean>
 	
 	<beans:bean id="loginInterceptor" class="com.dgit.interceptor.LoginInterceptor"></beans:bean>
@@ -42,6 +42,8 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/" />
+			<mapping path="/upload/list" />
+			<mapping path="/upload/upload" />
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>

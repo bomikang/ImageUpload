@@ -1,12 +1,15 @@
 package com.dgit.domain;
 
+import java.util.Arrays;
+
 public class UserVO {
 	private String uid;
 	private String upw;
 	private String uname;
 	private String uemail;
 	private String uphone;
-	
+	private String[] imageFiles;
+	private String folder;
 	
 	public String getUid() {
 		return uid;
@@ -38,10 +41,23 @@ public class UserVO {
 	public void setUphone(String uphone) {
 		this.uphone = uphone;
 	}
+	public String[] getImageFiles() {
+		return imageFiles;
+	}
+	public void setImageFiles(String[] imageFiles) {
+		this.imageFiles = imageFiles;
+	}
+	public String getFolder() {
+		return folder;
+	}
+	public void setFolder(String folder) {
+		this.folder = folder;
+	}
+	
 	@Override
 	public String toString() {
 		return "UserVO [uid=" + uid + ", upw=" + upw + ", uname=" + uname + ", uemail=" + uemail + ", uphone=" + uphone
-				+ "]";
+				+ ", imageFiles=" + Arrays.toString(imageFiles) + ", folder=" + folder + "]";
 	}
 	
 }
