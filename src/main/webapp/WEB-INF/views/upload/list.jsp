@@ -4,10 +4,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
 	.one-image{display: inline-block; margin:15px; position:relative;text-align: right;}
-	.one-image img{height:100px; box-shadow: 2px 2px 1px 1px gray;}
+	.one-image img{height:100px; box-shadow: 3px 3px 2px 1px gray;} 
 	.one-image input{position: absolute; margin-top:-96px; margin-left:-15px; visibility: hidden;}
-	.one-image button{position: absolute; font-size: 20px; width:30px; margin:-33px;}
+	.one-image .x-button{position: absolute; font-size:18px; width:30px; height:30px; margin:-22px; background:#159b7a; border:2px solid #dedede;
+						border-radius: 50%; color:#fff;}
+	#deleteButtonBox, #whenClickSelDel{display:block; margin-left:17px;}
 	#whenClickSelDel{display:none;}
+	.modal{width:1200px; position:relative; margin:0 auto; display:none;}
+	.modal div{width:80%; height:60%; background:rgba(255,255,255,0.8); margin: 0 auto; z-index:999; position: fixed; top:0; left:0; margin-top:7%; margin-left:10%;
+				border-radius: 20px;}
+	.modal div #btnClose{position:absolute; border:none; font-size:2em; margin-top:-50px; padding:5px; right:50px; color:#fff; background:rgba(0,0,0,0);}
+	.modal div #bigImage{max-width:95%; max-height:600px; text-align: center; margin:0 auto; display:block; padding-top:50px;}
+	#cover{width:100%; height:100%; background:rgba(0,0,0,0.6); position:fixed; left:0; top:0; display:none;}
 </style>
 <div class="wrapper">
 	<section>
@@ -50,7 +58,53 @@
 		</form>
 	</section>
 </div>
+
+<div id="cover"></div>
+
+<div class="modal">
+	<div>
+		<button id="btnClose">CLOSE</button>
+		<img src="" alt="" id="bigImage"/>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
+	
+	$(".one-image img").click(function(){
+		var src = $(this).attr("alt");
+		var split = src.split("/");
+		var folder = split[1];
+		
+		var filename = "";
+		
+		//폴더가 아니면 filename에 folder 저장
+		if (folder.indexOf(".jpg") > 0 || folder.indexOf(".png") > 0 || folder.indexOf(".gif") > 0
+			|| folder.indexOf(".JPG") > 0 || folder.indexOf(".PNG") > 0 || folder.indexOf(".GIF") > 0) {
+			
+			filename = folder;
+			filename = "/"+filename.replace("s_", "");
+		}else{
+			filename = split[2];
+			filename = "/"+filename.replace("s_", "");
+			filename = "/"+folder+filename;
+		}
+
+		$("#bigImage").attr("src", "displayFile?fileName="+filename);
+		
+		$('#bigImage').on("load", function() {
+		    $(".modal div").css("height", $(this).height()+100);
+		});
+		
+		$(".modal").fadeIn();
+		$("#cover").fadeIn();
+	});
+	
+	$("#btnClose").click(function(){
+		$(".modal").fadeOut();
+		$("#cover").fadeOut();
+	});
+	
+	
 	/* 전체삭제 */
 	$("#btnAllDel").click(function(){
 		var check = confirm("모든 이미지를 삭제하시겠습니까?");

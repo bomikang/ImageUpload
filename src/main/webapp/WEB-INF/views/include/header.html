@@ -20,14 +20,11 @@
 	.wrapper .left-menu{width:200px; background:#fff; position:absolute; top:-80px;}
 	
 	.modal{width:1200px; position:relative; margin:0 auto;}
-	.modal div{width:1000px; height:500px; background:#ff6699; margin: 0 auto; z-index:999; position: fixed; top:0; left:0;}
+	.modal div{width:50%; height:60%; background:#ff6699; margin: 0 auto; z-index:999; position: fixed; top:0; left:0; margin-top:10%; margin-left:25%;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
-	var height = $(window).height();
-	var width = $(window).width();
-
 	$(function(){
 		
 		$("#left-btn").find("a").click(function(e){
@@ -42,10 +39,7 @@
 			}
 		});
 		
-		var h = (height - 500) / 2;
-		var w = (width - 1000) / 2; 
-		$(".modal > div").css("margin-top", h);
-		$(".modal > div").css("margin-left", w);
+		
 	});
 </script>
 </head>
