@@ -21,4 +21,9 @@ public class UserServiceImpl implements UserService{
 	public UserVO selectUser(LoginDTO dto) throws Exception {
 		return dao.selectUser(dto);
 	}
+
+	@Override
+	public int checkExistUser(String uid) throws Exception {
+		return dao.checkExistUser(uid);
+	}
 }

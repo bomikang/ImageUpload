@@ -13,4 +13,9 @@
 		select * from tbl_user
 		where uid=#{uid} and upw=#{upw}
 	</select>
+	
+	<select id="checkExistUser" resultType="int">
+		select count(*) from tbl_user
+		where uid = #{uid};
+	</select>
 </mapper>

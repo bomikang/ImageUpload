@@ -24,4 +24,9 @@ public class UserDaoImpl implements UserDao{
 		return session.selectOne(namespace+".selectUser", dto);
 	}
 
+	@Override
+	public int checkExistUser(String uid) throws Exception {
+		return session.selectOne(namespace+".checkExistUser", uid);
+	}
+
 }

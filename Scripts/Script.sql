@@ -14,6 +14,9 @@ create table tbl_user(
 
 select * from tbl_user;
 
+select count(*) from tbl_user
+where uid = 'test1';
+
 delete from tbl_user where uid = 'adf';
 
 create table tbl_attach(

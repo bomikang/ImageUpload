@@ -5,9 +5,30 @@
 	input#uid{width:85% !important;}
 	button#checkingId{float:right;}
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+	$(function(){
+		$("#checkingId").click(function(e){
+			e.preventDefault();
+			
+			var id = $(this).parent("p").find("input").val();
+			
+			$.ajax({
+				url:"${pageContext.request.contextPath}/user/checkUid",
+				type:"post",
+				data:{uid : id},
+				success:function(result){
+					alert(result);
+				}
+			});
+			
+		});
+	});
+	
+</script>
 <div class="wrapper">
 	<section>
-		<form action="join" method="post">
+		<form action="" method="post" id="joinform">
 			<fieldset>
 				<legend>회원가입</legend>
 				<div class="input-box">

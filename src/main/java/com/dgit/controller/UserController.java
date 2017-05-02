@@ -5,11 +5,14 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dgit.domain.LoginDTO;
@@ -69,6 +72,26 @@ public class UserController {
 			session.invalidate();
 		}
 		return "redirect:/user/login";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/checkUid", method=RequestMethod.POST)
+	public ResponseEntity<String> checkExistUser(String uid){
+		ResponseEntity<String> entity = null;
+		
+		try{
+			int res = service.checkExistUser(uid);
+			if (res == 1) {
+				entity = new ResponseEntity<>("exist", HttpStatus.OK);
+			}else{
+				entity = new ResponseEntity<>("null", HttpStatus.OK);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 	}
 }
 
