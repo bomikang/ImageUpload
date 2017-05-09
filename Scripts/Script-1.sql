@@ -14,6 +14,9 @@ create table tbl_user(
 
 select * from tbl_user;
 
+select count(*) from tbl_user
+where uid = 'test1';
+
 delete from tbl_user where uid = 'adf';
 
 create table tbl_attach(
@@ -29,11 +32,7 @@ foreign key (uid) references tbl_user(uid);
 
 select * from tbl_attach;
 
-select * from tbl_attach 
-where folder='directory' and uid = 'test1'
-order by folder asc;
-
-select distinct folder from tbl_attach 
+select folder from tbl_attach 
 where folder is not null and uid = 'test1'
 order by folder asc;
 

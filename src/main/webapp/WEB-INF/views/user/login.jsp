@@ -6,7 +6,7 @@
 	.input-box p{margin:15px auto; width:80%;}
 	.input-box p.btn-area{text-align: center;}
 	.input-box label{display:inline-block; width:50%; padding:5px 0; font-size:18px;  color:#804040;}
-	.input-box input[type='text']{width:100%; font-size:16px; color:#804040; background:#d9b3b3; color:#fff; padding:3px; border:1px solid gray;}
+	.input-box input[type='text'],.input-box input[type='password']{width:100%; font-size:16px; color:#804040; background:#d9b3b3; color:#fff; padding:3px; border:1px solid gray;}
 </style>
 <div class="wrapper">
 	<section>
@@ -20,7 +20,7 @@
 					</p>
 					<p>
 						<label for="">비 밀 번 호</label><br />
-						<input type="text" name="upw" />
+						<input type="password" name="upw" />
 					</p>
 					<p class="btn-area">
 						<input type="submit" value="로그인" id="login"/>

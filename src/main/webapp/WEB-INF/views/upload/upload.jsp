@@ -6,16 +6,18 @@
 		<form action="upload" method="post" enctype="multipart/form-data">
 			<fieldset>
 				<legend>사진 등록</legend>
-				<p>
-					<label for="">폴더 이름</label>
-					<input type="text" name="directory"/>
-				</p>
-				<p>
-					<input type="file" name="files"  multiple="multiple"/>
-				</p>
-				<p>
-					<input type="submit" value="등록"/>
-				</p>
+				<div class="input-box">
+					<p>
+						<label for="">폴더 이름</label>
+						<input type="text" name="directory"/>
+					</p>
+					<p>
+						<input type="file" name="files"  multiple="multiple"/>
+					</p>
+					<p class='btn-area'>
+						<input type="submit" value="등록"/>
+					</p>
+				</div>
 			</fieldset>
 		</form>
 	</section>
