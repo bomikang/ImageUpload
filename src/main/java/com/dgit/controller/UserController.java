@@ -84,7 +84,7 @@ public class UserController {
 			if (res == 1) {
 				entity = new ResponseEntity<>("exist", HttpStatus.OK);
 			}else{
-				entity = new ResponseEntity<>("null", HttpStatus.OK);
+				entity = new ResponseEntity<>("unexist", HttpStatus.OK);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
