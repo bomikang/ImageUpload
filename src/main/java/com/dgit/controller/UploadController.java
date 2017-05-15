@@ -89,7 +89,7 @@ public class UploadController {
 		logger.info("list GET..........");
 		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
-		List<String> list = service.selectImage(vo.getUid());
+		List<UploadVO> list = service.selectImage(vo.getUid());
 		
 		if (folder != null && !folder.trim().equals("")) {
 			vo.setFolder(folder);
@@ -99,6 +99,8 @@ public class UploadController {
 		if (folder == null || folder.trim().equals("")) {
 			folder = "전체보기";
 		}
+		
+		logger.info(list.get(0)+"----------------------------------------------------------------------");
 		
 		if (list == null) {
 			model.addAttribute("error");
@@ -182,8 +184,12 @@ public class UploadController {
 		
 		UserVO vo = (UserVO) session.getAttribute(LoginInterceptor.LOGIN);
 		
-		List<String> imageList = service.selectImage(vo.getUid());
-		String[] filenames = imageList.toArray(new String[imageList.size()]);
+		List<UploadVO> imageList = service.selectImage(vo.getUid());
+		List<String> delList = new ArrayList<>();
+		for (UploadVO u : imageList) {
+			delList.add(u.getFullname());
+		}
+		String[] filenames = delList.toArray(new String[delList.size()]);
 		
 		if ( folder.trim().equals("전체보기") ) {
 			folder = null;

@@ -2,12 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix='fmt' uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
 	.one-image{display: inline-block; margin:15px; position:relative;text-align: right;}
+	.one-image #date{text-align: left; color:gray;}
 	.one-image img{height:100px; box-shadow: 3px 3px 2px 1px gray;} 
 	.one-image input{position: absolute; margin-top:-96px; margin-left:-15px; visibility: hidden;}
 	.one-image .x-button{position: absolute; font-size:18px; width:30px; height:30px; margin:-22px; background:#159b7a; border:2px solid #dedede;
 						border-radius: 50%; color:#fff;}
+	
 	#deleteButtonBox, #whenClickSelDel{display:block; margin-left:17px;}
 	#whenClickSelDel{display:none;}
 	.modal{width:1200px; position:relative; margin:0 auto; display:none;}
@@ -47,8 +50,9 @@
 				<div>
 					<c:forEach var="item" items="${imageList}">
 						<div class="one-image">
-							<img src="displayFile?fileName=${item}" alt="${item}" />
-							<input type="checkbox" value="${item}" class="check-del"/>
+							<p id="date"><fmt:formatDate value="${item.regdate}" pattern="yyyy-MM-dd" /></p>
+							<img src="displayFile?fileName=${item.fullname}" alt="${item.fullname}" />
+							<input type="checkbox" value="${item.fullname}" class="check-del"/>
 							<button class='x-button'>X</button>
 						</div>
 					</c:forEach>
@@ -69,7 +73,7 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
-	
+	/* 각 이미지 클릭 */
 	$(".one-image img").click(function(){
 		var src = $(this).attr("alt");
 		var split = src.split("/");
@@ -119,10 +123,12 @@
 	/* 선택삭제버튼을 클릭하면 삭제와 취소 버튼 나타남 */
 	$("#btnSelectDel").click(function(e){
 		e.preventDefault();
+		$(".one-image img").unbind("click");
 		$("#deleteButtonBox").css("display", "none");
 		$("#whenClickSelDel").css("display", "block");
 		$(".check-del").css("visibility", "visible");
 		$(".x-button").css("visibility", "hidden");
+		
 	});
 	
 	/* 선택삭제버튼을 클릭 후 나타난 취소버튼을 클릭했을 때 */

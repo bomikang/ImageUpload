@@ -23,7 +23,7 @@ public class UploadServiceImpl implements UploadService{
 	}
 
 	@Override
-	public List<String> selectImage(String uid) throws Exception {
+	public List<UploadVO> selectImage(String uid) throws Exception {
 		return dao.selectImage(uid);
 	}
 	
@@ -33,7 +33,7 @@ public class UploadServiceImpl implements UploadService{
 	}
 	
 	@Override
-	public List<String> selectImageByFolder(UserVO vo) throws Exception {
+	public List<UploadVO> selectImageByFolder(UserVO vo) throws Exception {
 		return dao.selectImageByFolder(vo);
 	}
 

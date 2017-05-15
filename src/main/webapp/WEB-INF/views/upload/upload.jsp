@@ -12,7 +12,7 @@
 						<input type="text" name="directory"/>
 					</p>
 					<p>
-						<input type="file" name="files"  multiple="multiple"/>
+						<input type="file" name="files"  multiple="multiple" id="uploadFile"/>
 					</p>
 					<p class='btn-area'>
 						<input type="submit" value="등록"/>
@@ -22,3 +22,16 @@
 		</form>
 	</section>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+	$(function(){
+		$(".btn-area input").click(function(e){
+			e.preventDefault();
+			if ($("#uploadFile").val() == "") {
+				alert("파일을 선택해주세요!");
+			}else{
+				$("form").submit();
+			}
+		});
+	});
+</script>

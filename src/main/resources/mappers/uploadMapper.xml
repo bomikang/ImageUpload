@@ -9,7 +9,7 @@
 		values(#{fullname}, #{uid}, #{folder})
 	</insert>
 	
-	<select id="selectImage" resultType="String">
+	<select id="selectImage" resultType="UploadVO">
 		select * from tbl_attach 
 		where uid = #{uid}
 		order by regdate desc;
@@ -21,7 +21,7 @@
 		order by folder asc;
 	</select>
 	
-	<select id="selectImageByFolder" resultType="String">
+	<select id="selectImageByFolder" resultType="UploadVO">
 		select * from tbl_attach 
 		where folder=#{folder} and uid = #{uid}
 		order by folder asc;

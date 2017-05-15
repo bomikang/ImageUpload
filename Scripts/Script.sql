@@ -12,13 +12,6 @@ create table tbl_user(
 	primary key(uid)
 )
 
-select * from tbl_user;
-
-select count(*) from tbl_user
-where uid = 'test1';
-
-delete from tbl_user where uid = 'adf';
-
 create table tbl_attach(
 	fullname varchar(150) not null,
 	uid varchar(50) not null,
@@ -27,10 +20,22 @@ create table tbl_attach(
 	primary key(fullname)
 )
 
+
 alter table tbl_attach add constraint fk_board_attach
 foreign key (uid) references tbl_user(uid);
 
+select * from tbl_user;
+
+select count(*) from tbl_user
+where uid = 'test1';
+
+delete from tbl_user where uid = 'adf';
+
 select * from tbl_attach;
+
+select * from tbl_attach 
+		where uid = 'test1'
+		order by regdate desc;
 
 select folder from tbl_attach 
 where folder is not null and uid = 'test1'

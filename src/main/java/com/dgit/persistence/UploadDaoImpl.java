@@ -28,7 +28,7 @@ public class UploadDaoImpl implements UploadDao{
 	}
 
 	@Override
-	public List<String> selectImage(String uid) throws Exception {
+	public List<UploadVO> selectImage(String uid) throws Exception {
 		return session.selectList(namespace+".selectImage", uid);
 	}
 	
@@ -38,7 +38,7 @@ public class UploadDaoImpl implements UploadDao{
 	}
 	
 	@Override
-	public List<String> selectImageByFolder(UserVO vo) throws Exception {
+	public List<UploadVO> selectImageByFolder(UserVO vo) throws Exception {
 		return session.selectList(namespace+".selectImageByFolder", vo);
 	}
 
